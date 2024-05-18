@@ -1,0 +1,42 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  info_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: simple
+    filename: logs/info/info.log
+    maxBytes: 104857600  # 100 MB
+    backupCount: 20
+  error_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: simple
+    filename: logs/error/error.log
+    maxBytes: 104857600  # 100 MB
+    backupCount: 20
+  sys_logger:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: logs/sys_logs/sys_logs.log
+    maxBytes: 104857600  # 100 MB
+    backupCount: 20
+loggers:
+  uvicorn:
+    level: INFO
+    handlers: [console, info_file_handler]
+  sys_logger:
+    level: DEBUG
+    handlers: [console, info_file_handler]
+root:
+  level: INFO
+  handlers: [console, info_file_handler, error_file_handler]

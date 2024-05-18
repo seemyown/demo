@@ -1,0 +1,6 @@
+venv/
+.env
+.idea/
+__pycache__/
+ingo.log
+error.log
