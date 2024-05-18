@@ -9,7 +9,7 @@ from sqlalchemy import String, ForeignKey, Table, MetaData, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
 import enum
 
-from database.connector import engine, async_session
+from database.connector import engine, async_session, sync_engine
 
 intpk = Annotated[int, mapped_column(BigInteger, primary_key=True)]
 uuidpk = Annotated[UUID, mapped_column(primary_key=True, default=uuid.uuid4)]
@@ -234,7 +234,7 @@ async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    data = pd.read_sql("select count(*) from federal_districts", engine)
+    data = pd.read_sql("select count(*) from federal_districts", sync_engine)
     if data.empty:
         fed_dists = pd.read_csv(
             "./source/federal_districts.csv", low_memory=False
